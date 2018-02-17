@@ -1,0 +1,39 @@
+version: '2'
+networks:
+  internal:
+    driver: bridge
+
+services:
+  ansible:
+    build: images/ansible
+    networks:
+      internal:
+         aliases:
+           - web1
+           - db1
+    links:
+      - web1
+    ports:
+      - "8080:8080"
+
+  web1:
+    build: images/web1
+    networks:
+      internal:
+         aliases:
+           - ansible
+           - db1
+    links:
+      - db1
+    ports:
+      - "80:80"
+
+  db1:
+    build: images/db1
+    networks:
+      internal:
+        aliases:
+           - ansible
+           - web1
+    ports:
+      - "9002:9000"
