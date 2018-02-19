@@ -2,41 +2,25 @@ version: '2'
 networks:
   internal:
     driver: bridge
-services:
 
+services:
   ansible:
     build: images/ansible
     networks:
       internal:
          aliases:
-           - jenkins
-           - web1
-           - db1
-    links:
-      - jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-
-  jenkins:
-    build: images/jenkins
-    networks:
-      internal:
-         aliases:
-           - ansible
            - web1
            - db1
     links:
       - web1
-#    ports:
-#      - "8080:8080"
+    ports:
+      - "8080:8080"
 
   web1:
     build: images/web1
     networks:
       internal:
          aliases:
-           - jenkins
            - ansible
            - db1
     links:
@@ -49,6 +33,7 @@ services:
     networks:
       internal:
         aliases:
-           - jenkins
            - ansible
            - web1
+    ports:
+      - "9002:9000"
